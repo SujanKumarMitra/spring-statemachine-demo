@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: "spring-statemachine-demo"
+  profiles:
+    active: "h2db"
