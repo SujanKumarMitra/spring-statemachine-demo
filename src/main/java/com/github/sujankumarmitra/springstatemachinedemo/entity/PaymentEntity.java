@@ -1,4 +1,4 @@
-package com.github.sujankumarmitra.springstatemachinedemo;
+package com.github.sujankumarmitra.springstatemachinedemo.entity;
 
 
 import com.github.sujankumarmitra.springstatemachinedemo.model.Payment;
