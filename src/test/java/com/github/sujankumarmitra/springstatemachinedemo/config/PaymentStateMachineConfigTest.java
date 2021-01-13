@@ -2,20 +2,19 @@ package com.github.sujankumarmitra.springstatemachinedemo.config;
 
 import com.github.sujankumarmitra.springstatemachinedemo.model.PaymentEvent;
 import com.github.sujankumarmitra.springstatemachinedemo.model.PaymentState;
+import com.github.sujankumarmitra.springstatemachinedemo.service.PaymentServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.config.StateMachineFactory;
+
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-@EnableAutoConfiguration(exclude = {
-        DataSourceAutoConfiguration.class
-})
 class PaymentStateMachineConfigTest {
 
     @Autowired
@@ -28,7 +27,10 @@ class PaymentStateMachineConfigTest {
         stateMachine.start(); // start the statemachine
         assertEquals(PaymentState.NEW, stateMachine.getState().getId());
 
-        stateMachine.sendEvent(PaymentEvent.PRE_AUTH_APPROVED);
+        stateMachine.sendEvent(MessageBuilder
+                .withPayload(PaymentEvent.PRE_AUTH_APPROVED)
+                .setHeader(PaymentServiceImpl.PAYMENT_HEADER_NAME, String.valueOf(UUID.randomUUID()))
+                .build());
 
         assertEquals(PaymentState.PRE_AUTH, stateMachine.getState().getId());
     }

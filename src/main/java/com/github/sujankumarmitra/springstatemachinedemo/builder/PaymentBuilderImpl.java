@@ -11,6 +11,14 @@ public class PaymentBuilderImpl implements PaymentBuilder {
 
     private MutablePayment payment;
 
+    private PaymentBuilderImpl() {
+        payment = new MutablePayment();
+    }
+
+    public static PaymentBuilder builder() {
+        return new PaymentBuilderImpl();
+    }
+
     @Override
     public PaymentBuilder withId(String id) {
         payment.setId(id);
